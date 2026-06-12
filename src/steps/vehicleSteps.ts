@@ -1,4 +1,4 @@
-import { expect, Page } from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 import { vehiclePageComponent } from "../pages/vehiclePageComponent";
 import { getRandomInt, getRandomIntMin } from "../utils/utils";
 import { LETTERS_PLATES_OTHER } from "../constants/vehicleData";
@@ -7,6 +7,9 @@ export class VehicleSteps {
   private vehiclePage: vehiclePageComponent;
   private plateId: string;
   public page: Page;
+
+  private intervals: number[] = [200, 500, 1_000];
+  private timeout: number = 10_000;
 
   constructor(page: Page) {
     ((this.vehiclePage = new vehiclePageComponent(page)), (this.page = page));
@@ -33,14 +36,27 @@ export class VehicleSteps {
     vehicleName: string,
     country: string,
   ): Promise<void> {
+    await expect(async () => {
+      await expect(this.vehiclePage.inputVehicleName).toBeVisible()
+    }).toPass({
+      intervals: this.intervals,
+      timeout: this.timeout
+    });
     await expect(this.vehiclePage.inputVehicleName).toBeVisible();
     await this.vehiclePage.inputVehicleName.fill(vehicleName);
     await this.vehiclePage.inputVehicleRegistration.fill(this.plateId);
     await this.vehiclePage.selectVehicleCountry.selectOption(country);
-
     await this.vehiclePage.buttonNewVehicleSave.click();
-
     await expect(this.page.getByText(this.plateId)).toBeVisible();
+  }
+
+  async validateThatVehicleHasBeenAdded(): Promise<void> {
+    await expect(async () => {
+      await expect(this.page.locator(`//span[text()="${this.plateId}"]`)).toBeVisible()
+    }).toPass({
+      intervals: this.intervals,
+      timeout: this.timeout
+    });
   }
 
   async clickOnVehicleEditButton(): Promise<void> {
@@ -50,13 +66,25 @@ export class VehicleSteps {
   }
 
   async clickOnVehicleRemoveButton(): Promise<void> {
-    await expect(
-      this.page.locator(`//input[@value="${this.plateId}"]`),
-    ).toBeVisible();
+    await expect(async () => {
+      await expect(this.page.locator(`//input[@value="${this.plateId}"]`)).toBeVisible();
+    }).toPass({
+      intervals: this.intervals,
+      timeout: this.timeout
+    });
     await this.vehiclePage.buttonRemoveVehicle.click();
   }
 
   async clickOnVehicleConfirmDeletionButton(): Promise<void> {
     await this.vehiclePage.buttonRemoveVehicleConfirm.click();
+  }
+
+  async validateThatVehicleHasBeenRemoved(): Promise<void> {
+    await expect(async () => {
+      await expect(this.page.locator(`//span[text()="${this.plateId}"]`)).toHaveCount(0)
+    }).toPass({
+      intervals: this.intervals,
+      timeout: this.timeout
+    });
   }
 }
