@@ -1,4 +1,5 @@
 import { test } from "../../../fixtures/merge";
+import { cookieAccept } from "../../../utils/cookieAccept";
 
 test.describe("Vehicle Feature", () => {
   test.beforeEach('Common vehicles steps', async ({
@@ -8,14 +9,11 @@ test.describe("Vehicle Feature", () => {
   }) => {
     await test.step("Go to vehicle page", async () => {
       await page.goto("/");
+      await cookieAccept(page);
       await homeSteps.clickOnVehicleMenuButton();
     });
-
-    await test.step("Click on add new vehicle", async () => {
-      await vehicleSteps.clickOnAddNewVehicleButton();
-    });
-
-    await test.step("Fill new vehicle form out and save", async () => {
+    
+    await test.step("Click on add new vehicle, after fill new vehicle form out and save", async () => {
       await vehicleSteps.fillAddVehicleFormOut("BMW X1", "Other");
     });
   });
@@ -35,11 +33,7 @@ test.describe("Vehicle Feature", () => {
       await vehicleSteps.validateThatVehicleHasBeenAdded();
     });
 
-    await test.step("Click on edit vehicle", async () => {
-      await vehicleSteps.clickOnVehicleEditButton();
-    });
-
-    await test.step("Click on remove vehicle", async () => {
+    await test.step("Click on edit, after click on remove vehicle", async () => {
       await vehicleSteps.clickOnVehicleRemoveButton();
     });
 
