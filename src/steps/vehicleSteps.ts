@@ -31,18 +31,18 @@ export class VehicleSteps {
   async clickOnAddNewVehicleButton(): Promise<void> {
     await this.vehiclePage.buttonAddNewVehicle.click();
   }
-
+  
   async fillAddVehicleFormOut(
     vehicleName: string,
     country: string,
   ): Promise<void> {
     await expect(async () => {
+      await this.clickOnAddNewVehicleButton();
       await expect(this.vehiclePage.inputVehicleName).toBeVisible()
     }).toPass({
       intervals: this.intervals,
       timeout: this.timeout
     });
-    await expect(this.vehiclePage.inputVehicleName).toBeVisible();
     await this.vehiclePage.inputVehicleName.fill(vehicleName);
     await this.vehiclePage.inputVehicleRegistration.fill(this.plateId);
     await this.vehiclePage.selectVehicleCountry.selectOption(country);
@@ -67,6 +67,7 @@ export class VehicleSteps {
 
   async clickOnVehicleRemoveButton(): Promise<void> {
     await expect(async () => {
+      await this.clickOnVehicleEditButton();
       await expect(this.page.locator(`//input[@value="${this.plateId}"]`)).toBeVisible();
     }).toPass({
       intervals: this.intervals,
