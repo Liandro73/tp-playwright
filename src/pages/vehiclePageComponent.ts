@@ -12,6 +12,7 @@ export class vehiclePageComponent {
   public buttonEditVehicle: Locator;
   public buttonRemoveVehicle: Locator;
   public buttonRemoveVehicleConfirm: Locator;
+  public labelRegisteredVehicle: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -27,13 +28,15 @@ export class vehiclePageComponent {
     this.buttonNewVehicleSave = this.page.getByRole("link", {
       name: "Guardar",
     });
-
     this.buttonEditVehicle = this.page
-      .locator('//div[@class="span2 bg vehicles"]/a')
+      .getByRole("link", {
+        name: "Editar",
+      })
       .first();
     this.buttonRemoveVehicle = this.page.locator('//a[@class="close"]');
     this.buttonRemoveVehicleConfirm = this.page.getByText("Remover", {
       exact: true,
     });
+    this.labelRegisteredVehicle = this.page.getByText("BMW X1");
   }
 }

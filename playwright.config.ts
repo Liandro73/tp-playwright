@@ -56,12 +56,21 @@ export default defineConfig({
     },
 
     {
+      name: "vehicles",
+      use: {
+        storageState: "playwright/.auth/auth.json",
+      },
+      testMatch: /.*\.vehicles\.ts/,
+      dependencies: ["setup"],
+    },
+
+    {
       name: "chromium",
       use: {
         ...devices["Desktop Chrome"],
         storageState: "playwright/.auth/auth.json",
       },
-      dependencies: ["setup"],
+      dependencies: ["setup", "vehicles"],
     },
 
     {
@@ -70,7 +79,7 @@ export default defineConfig({
         ...devices["Desktop Firefox"],
         storageState: "playwright/.auth/auth.json",
       },
-      dependencies: ["setup"],
+      dependencies: ["setup", "vehicles"],
     },
 
     {
@@ -79,7 +88,7 @@ export default defineConfig({
         ...devices["Desktop Safari"],
         storageState: "playwright/.auth/auth.json",
       },
-      dependencies: ["setup"],
+      dependencies: ["setup", "vehicles"],
     },
 
     /* Test against mobile viewports. */

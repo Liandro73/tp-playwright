@@ -15,3 +15,5 @@ export const test = hooksFixture.extend<{}>({
     });
   },
 });
+
+export { expect } from '@playwright/test';
