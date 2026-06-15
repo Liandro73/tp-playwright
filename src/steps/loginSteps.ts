@@ -3,8 +3,8 @@ import { loginPageComponent } from "../pages/loginPageComponent";
 import { ERROR_MESSAGES } from "../constants/errorHandlingMessages";
 
 export class LoginSteps {
-  private loginPage: loginPageComponent;
   public page: Page;
+  private loginPage: loginPageComponent;
 
   constructor(page: Page) {
     ((this.loginPage = new loginPageComponent(page)), (this.page = page));
